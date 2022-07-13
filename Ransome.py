@@ -6,8 +6,11 @@ from Crypto.Cipher import PKCS1_OAEP, AES
 
 
 # public key with base64 encoding
-pubKey = '''LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6aFFqanppMllMdkhORmMvSFgrNgpUcHBXNHB4VFdZRUErM1Fya2Jqd2ZxeEg4b3NmV0xlQ2R1M1VxZ1Rwc0dmTXVReE85T3JUR2I1ZXduY01EZUFUCmVFd0I1QXA5QnF0MUNFYTI4SWZHYXNESWVSZWZKUlBIQUUrZ0FYUHYwUGxVOHVvcEE2YUZ5NEFMVHE5TXpVaWUKbzlwOXB5QW9KK0lnMHIwdGk5SjY4Rk5aUUJaeDl1MlhORnBnUUR2MGZvcGRDWnVGZFBZRnliSmloNnpLVjV3cQpVdS96YmswWm45aXd0WVNCNVhaR1E1ZlJYbkcxejVwREE3RVhaVjNPR3RKWVpDb29oN3hUZmoyejM3WkZKbGQyCmM1aDFtRHVHNjV6ZnlsbFgrc1Y2TS9OMnkxZGZaYXM2RjQxYmdyY1liSnFveDZ0aDVRN09QYUpqbThQTnlSaFoKb3dJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t'''
-pubKey = base64.b64decode(pubKey)
+
+# for decrypting file, you doesn't need public key
+
+#pubKey = '''LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF6aFFqanppMllMdkhORmMvSFgrNgpUcHBXNHB4VFdZRUErM1Fya2Jqd2ZxeEg4b3NmV0xlQ2R1M1VxZ1Rwc0dmTXVReE85T3JUR2I1ZXduY01EZUFUCmVFd0I1QXA5QnF0MUNFYTI4SWZHYXNESWVSZWZKUlBIQUUrZ0FYUHYwUGxVOHVvcEE2YUZ5NEFMVHE5TXpVaWUKbzlwOXB5QW9KK0lnMHIwdGk5SjY4Rk5aUUJaeDl1MlhORnBnUUR2MGZvcGRDWnVGZFBZRnliSmloNnpLVjV3cQpVdS96YmswWm45aXd0WVNCNVhaR1E1ZlJYbkcxejVwREE3RVhaVjNPR3RKWVpDb29oN3hUZmoyejM3WkZKbGQyCmM1aDFtRHVHNjV6ZnlsbFgrc1Y2TS9OMnkxZGZaYXM2RjQxYmdyY1liSnFveDZ0aDVRN09QYUpqbThQTnlSaFoKb3dJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t'''
+#pubKey = base64.b64decode(pubKey)
 
 privateKeyFile = 'private.pem'
 
@@ -51,7 +54,7 @@ def decrypt(dataFile, privateKeyFile):
 
     # save the decrypted data to file
     fileName= dataFile.split(extension)[0]
-    fileExtension = '.L0v3sh3'
+    fileExtension = '.decrypted' # mark the file was decrypted
     decryptedFile = fileName + fileExtension
     with open(decryptedFile, 'wb') as f:
         f.write(data)
@@ -59,11 +62,13 @@ def decrypt(dataFile, privateKeyFile):
     print('Decrypted file saved to ' + decryptedFile)
 
 directory = '../' # CHANGE THIS
-excludeExtension = ['.py','.pem', '.exe'] # CHANGE THIS
+
+# because we need to decrypt file focus on .L0v3sh3 extension here is the code
+includeExtension = ['.L0v3sh3'] # CHANGE THIS
 for item in scanRecurse(directory): 
     filePath = Path(item)
     fileType = filePath.suffix.lower()
-
-    if fileType in excludeExtension:
-        continue
-    decrypt(filePath, privateKeyFile)
+    
+    # run the decryptor just if the extension is .L0v3sh3
+    if fileType in includeExtension:
+        decrypt(filePath, privateKeyFile)
